@@ -1,0 +1,123 @@
+---
+title: MDX With Component
+date: 30 Nov 2022
+desc: An example for React components in mdx
+cover: /images/mdx-with-component.png
+---
+
+An example for `MDX` with `React Components`. Tools that we could use:
+
+- [react-syntax-highlighter](https://www.npmjs.com/package/react-syntax-highlighter "For syntax highlighting")
+- [next-mdx-remote](https://www.npmjs.com/package/next-mdx-remote "Display matter to html")
+
+---
+
+## Javascript file examples
+
+`slug.js`
+
+<SyntaxHighlighter language="javascript">
+  {`
+    // pages/[slug].js
+    import { MDXRemote } from "next-mdx-remote";
+    import Button from "../components/Button";
+    import SyntaxHighlighter from "../components/SyntaxHighlighter";
+
+    // Import components to be used in mdx
+    const components = { Button, SyntaxHighlighter };
+
+    export default function DetailPost({mdxSource}) {
+      return <MDXRemote {mdxSource} components={components} />
+    }
+
+    // Your logic
+    export const getStaticProps = () {...}
+    export const getStaticPaths = () => {...}
+
+`}
+
+</SyntaxHighlighter>
+
+<br />
+
+`SyntaxHighlighter.js`
+
+<SyntaxHighlighter language="javascript">
+  {`
+    // components/SyntaxHighlighter.js
+    import ReactSyntaxHighlighter from "react-syntax-highlighter";
+    import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+
+    const SyntaxHighlighter = ({ language, children }) => {
+      return (
+        <ReactSyntaxHighlighter language={language} style={atomOneDark} PreTag="div">
+          {children}
+        </ReactSyntaxHighlighter>
+      );
+    };
+
+    export default SyntaxHighlighter;
+
+`}
+
+</SyntaxHighlighter>
+
+<br />
+
+`Button.js`
+
+<SyntaxHighlighter language="javascript">
+  {`
+    // components/Button.js
+    const Button = ({ text }) => {
+      return (
+        <>
+          <button className="btn" onClick={event => (event.target.innerText = \`changed -> \${text}\`)}>
+            button
+          </button>
+        </>
+      );
+    };
+
+    export default Button;
+
+`}
+
+</SyntaxHighlighter>
+
+<br />
+
+## MDX files
+
+<SyntaxHighlighter language="yaml">
+  {`
+    ---
+    title: MDX With Component
+    date: 30 Nov 2022
+    desc: An example for React components in mdx
+    cover: /images/mdx-with-component.png
+    ---
+
+    ## MDX with Components
+
+    <SyntaxHighlighter language="javascript">
+      {\`
+        const Person = {
+          name: 'Smith',
+          greet() {
+            return \`Hello, my name is \${this.name}\`
+          }
+        }
+    \`}
+
+    </SyntaxHighlighter>
+
+    {<Button text="from mdx" />}
+
+`}
+
+</SyntaxHighlighter>
+
+<br />
+
+<Button text="from mdx" />
